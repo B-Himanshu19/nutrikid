@@ -1,11 +1,8 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Camera, Upload, Zap, Clock, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { MealUpload } from "./meal-analysis/MealUpload";
+import { AnalysisResults } from "./meal-analysis/AnalysisResults";
 
 export const MealAnalysis = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -80,161 +77,17 @@ export const MealAnalysis = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Upload Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Camera className="w-5 h-5" />
-                Upload Meal Photo
-              </CardTitle>
-              <CardDescription>
-                Take a clear photo of the meal from above for best results
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
-                  {selectedImage ? (
-                    <img
-                      src={selectedImage}
-                      alt="Selected meal"
-                      className="max-w-full h-48 object-cover mx-auto rounded-lg"
-                    />
-                  ) : (
-                    <div className="space-y-4">
-                      <Upload className="w-12 h-12 text-gray-400 mx-auto" />
-                      <p className="text-gray-500">Click to upload or drag and drop</p>
-                    </div>
-                  )}
-                </div>
-                
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="w-full"
-                  id="meal-upload"
-                />
-                
-                <Button
-                  onClick={analyzeMeal}
-                  disabled={!selectedImage || analyzing}
-                  className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600"
-                >
-                  {analyzing ? (
-                    <>
-                      <Clock className="w-4 h-4 mr-2 animate-spin" />
-                      Analyzing...
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-4 h-4 mr-2" />
-                      Analyze Meal
-                    </>
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Analysis Results */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Analysis Results</CardTitle>
-              <CardDescription>
-                Nutritional breakdown and recommendations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {analyzing && (
-                <div className="space-y-4">
-                  <div className="text-center py-8">
-                    <div className="animate-pulse">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Zap className="w-8 h-8 text-blue-500" />
-                      </div>
-                      <p className="text-lg font-medium">Analyzing your meal...</p>
-                      <p className="text-sm text-gray-500">This may take a few seconds</p>
-                    </div>
-                  </div>
-                  <Progress value={33} className="w-full" />
-                </div>
-              )}
-
-              {analysis && (
-                <div className="space-y-6">
-                  {/* Nutrition Score */}
-                  <div className="text-center">
-                    <div className="relative inline-block">
-                      <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                        {analysis.nutritionScore}
-                      </div>
-                      <Badge className="absolute -top-2 -right-2 bg-green-100 text-green-700">
-                        Excellent
-                      </Badge>
-                    </div>
-                    <p className="mt-2 text-sm text-gray-600">Nutrition Score</p>
-                  </div>
-
-                  {/* Detected Foods */}
-                  <div>
-                    <h4 className="font-semibold mb-3">Detected Foods</h4>
-                    <div className="space-y-2">
-                      {analysis.foodItems.map((item, index) => (
-                        <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                          <span className="text-sm font-medium">{item.name}</span>
-                          <span className="text-sm text-gray-600">{item.calories} cal</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Nutrition Breakdown */}
-                  <div>
-                    <h4 className="font-semibold mb-3">Nutrition Breakdown</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-3 bg-blue-50 rounded">
-                        <div className="text-lg font-bold text-blue-600">{analysis.totalNutrition.calories}</div>
-                        <div className="text-sm text-gray-600">Calories</div>
-                      </div>
-                      <div className="text-center p-3 bg-green-50 rounded">
-                        <div className="text-lg font-bold text-green-600">{analysis.totalNutrition.protein}g</div>
-                        <div className="text-sm text-gray-600">Protein</div>
-                      </div>
-                      <div className="text-center p-3 bg-yellow-50 rounded">
-                        <div className="text-lg font-bold text-yellow-600">{analysis.totalNutrition.carbs}g</div>
-                        <div className="text-sm text-gray-600">Carbs</div>
-                      </div>
-                      <div className="text-center p-3 bg-purple-50 rounded">
-                        <div className="text-lg font-bold text-purple-600">{analysis.totalNutrition.fat}g</div>
-                        <div className="text-sm text-gray-600">Fat</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Recommendations */}
-                  <div>
-                    <h4 className="font-semibold mb-3">Recommendations</h4>
-                    <div className="space-y-2">
-                      {analysis.recommendations.map((rec, index) => (
-                        <div key={index} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>{rec}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {!selectedImage && !analyzing && (
-                <div className="text-center py-8 text-gray-500">
-                  <Camera className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Upload a meal photo to get started</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <MealUpload
+            selectedImage={selectedImage}
+            analyzing={analyzing}
+            onImageUpload={handleImageUpload}
+            onAnalyzeMeal={analyzeMeal}
+          />
+          <AnalysisResults
+            analyzing={analyzing}
+            analysis={analysis}
+            selectedImage={selectedImage}
+          />
         </div>
       </div>
     </div>
