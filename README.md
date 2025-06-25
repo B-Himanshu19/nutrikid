@@ -1,5 +1,5 @@
 # Welcome to the project
-NutriKid
+Nutri-Kid
 
 
 ## How can I edit this code?
