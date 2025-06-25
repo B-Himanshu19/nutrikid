@@ -1,18 +1,11 @@
-# Welcome to your Lovable project
+# Welcome to the project
+NutriKid
 
-## Project info
-
-**URL**: https://lovable.dev/projects/7a6b184a-dd94-4aa5-a818-325a3cd5dd2c
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/7a6b184a-dd94-4aa5-a818-325a3cd5dd2c) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
